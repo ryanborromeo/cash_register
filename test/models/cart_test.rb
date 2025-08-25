@@ -14,7 +14,7 @@ class CartTest < ActiveSupport::TestCase
 
   test "adds a product" do
     cart = Cart.new
-    cart.add_product(@product1)
+    CartServices::AddProduct.call(cart, @product1)
 
     assert_equal 1, cart.items.length
     assert_equal @product1.id, cart.items.first.product_id
@@ -23,16 +23,16 @@ class CartTest < ActiveSupport::TestCase
 
   test "adds multiple products" do
     cart = Cart.new
-    cart.add_product(@product1)
-    cart.add_product(@product2)
+    CartServices::AddProduct.call(cart, @product1)
+    CartServices::AddProduct.call(cart, @product2)
 
     assert_equal 2, cart.items.length
   end
 
   test "increments quantity for duplicate products" do
     cart = Cart.new
-    cart.add_product(@product1)
-    cart.add_product(@product1)
+    CartServices::AddProduct.call(cart, @product1)
+    CartServices::AddProduct.call(cart, @product1)
 
     assert_equal 1, cart.items.length
     assert_equal 2, cart.items.first.quantity
@@ -40,9 +40,9 @@ class CartTest < ActiveSupport::TestCase
 
   test "calculates the total price" do
     cart = Cart.new
-    cart.add_product(@product1)
-    cart.add_product(@product1)
-    cart.add_product(@product2)
+    CartServices::AddProduct.call(cart, @product1)
+    CartServices::AddProduct.call(cart, @product1)
+    CartServices::AddProduct.call(cart, @product2)
 
     expected_total = (@product1.price * 2) + @product2.price
     assert_equal expected_total, cart.total

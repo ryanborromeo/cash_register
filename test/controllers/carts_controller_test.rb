@@ -9,7 +9,7 @@ class CartsControllerTest < ActionDispatch::IntegrationTest
     post cart_path, params: { product_id: @product.id }
 
     assert_redirected_to root_path
-    assert_equal "Product added to cart", flash[:notice]
+    assert_equal "#{@product.name} added to cart.", flash[:notice]
 
     # Verify session data
     cart_data = session[:cart]
