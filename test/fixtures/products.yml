@@ -1,0 +1,14 @@
+green_tea:
+  code: GR1
+  name: Green tea
+  price: 3.11
+
+strawberries:
+  code: SR1
+  name: Strawberries
+  price: 5.00
+
+coffee:
+  code: CF1
+  name: Coffee
+  price: 11.23
