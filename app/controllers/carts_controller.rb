@@ -1,0 +1,26 @@
+class CartsController < ApplicationController
+  def create
+    product = Product.find(params[:product_id])
+    CartServices::AddProduct.call(current_cart, product)
+    save_cart
+
+    flash[:notice] = "#{product.name} added to cart."
+    redirect_to root_path
+  end
+
+  def show
+    render inertia: 'Cart/Show', props: {
+      cart: {
+        items: current_cart.enriched_items,
+        total: current_cart.total
+      }
+    }
+  end
+
+  def destroy
+    current_cart.clear
+    save_cart
+    flash[:notice] = "Cart has been cleared."
+    redirect_to cart_path
+  end
+end
