@@ -34,7 +34,7 @@ export default function ProductsIndex({ products }: Props) {
                 {product.name}
               </h3>
               <div className="text-2xl font-bold text-green-600">
-                ${product.price.toFixed(2)}
+                ${Number(product.price).toFixed(2)}
               </div>
             </div>
           ))}

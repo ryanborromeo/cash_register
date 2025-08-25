@@ -30,7 +30,7 @@ class ProductTest < ActiveSupport::TestCase
   test "price should be greater than zero" do
     product = Product.new(code: "TEST", name: "Test Product", price: 0)
     assert_not product.save
-    
+
     product.price = -1
     assert_not product.save
   end
