@@ -16,4 +16,11 @@ class CartsController < ApplicationController
       }
     }
   end
+
+  def destroy
+    current_cart.clear
+    save_cart
+    flash[:notice] = "Cart has been cleared."
+    redirect_to cart_path
+  end
 end

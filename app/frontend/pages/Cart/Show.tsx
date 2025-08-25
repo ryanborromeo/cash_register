@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import React from 'react';
 
 interface Product {
@@ -21,6 +21,12 @@ interface CartProps {
 }
 
 const CartShow: React.FC<CartProps> = ({ cart }) => {
+  const handleClearCart = () => {
+    if (confirm('Are you sure you want to clear your cart?')) {
+      router.delete('/cart');
+    }
+  };
+
   return (
     <>
       <Head title="Your Cart" />
@@ -55,6 +61,15 @@ const CartShow: React.FC<CartProps> = ({ cart }) => {
             <div className="grid grid-cols-4 gap-4 font-bold mt-6 text-xl">
               <div className="col-span-3 text-right">Grand Total:</div>
               <div className="text-right">${Number(cart.total).toFixed(2)}</div>
+            </div>
+
+            <div className="mt-8 flex justify-end">
+              <button
+                onClick={handleClearCart}
+                className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors shadow-md"
+              >
+                Clear Cart
+              </button>
             </div>
           </div>
         )}

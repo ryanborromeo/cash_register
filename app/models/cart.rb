@@ -37,6 +37,10 @@ class Cart
     end
   end
 
+  def clear
+    @items = []
+  end
+
   def total
     @items.sum(&:price)
   end
