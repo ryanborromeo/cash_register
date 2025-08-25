@@ -18,7 +18,7 @@ Rails.application.configure do
         policy.script_src(*policy.script_src, :unsafe_inline, :unsafe_eval, "http://#{ViteRuby.config.host_with_port}")
         policy.style_src(*policy.style_src, :unsafe_inline)
         # Allow @vite/client to connect to the Vite development server
-        policy.connect_src(*policy.connect_src, "ws://#{ViteRuby.config.host_with_port}")
+        policy.connect_src(*policy.connect_src, :self, "ws://#{ViteRuby.config.host_with_port}")
       end
   
       # You may need to enable this in production as well depending on your setup.
