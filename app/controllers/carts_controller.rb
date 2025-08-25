@@ -4,7 +4,8 @@ class CartsController < ApplicationController
     current_cart.add_product(product)
     save_cart
 
-    redirect_to root_path, notice: "Product added to cart"
+    flash[:notice] = "#{product.name} added to cart."
+    redirect_to root_path
   end
 
   def show

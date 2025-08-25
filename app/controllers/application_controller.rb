@@ -1,4 +1,11 @@
 class ApplicationController < ActionController::Base
+  inertia_share flash: -> {
+    {
+      notice: flash[:notice],
+      alert: flash[:alert]
+    }
+  }
+
   protect_from_forgery with: :exception
   helper_method :current_cart
 

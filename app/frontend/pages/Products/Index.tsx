@@ -1,4 +1,7 @@
-import { Head, Link, router } from '@inertiajs/react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
+import { useState, useEffect } from 'react'
+
+import Alert from '../../components/Alert'
 
 interface Product {
   id: number
@@ -7,11 +10,17 @@ interface Product {
   price: number
 }
 
-interface Props {
-  products: Product[]
+interface PageProps {
+  products: Product[];
+  flash: {
+    notice?: string;
+    alert?: string;
+  };
 }
 
-export default function ProductsIndex({ products }: Props) {
+export default function ProductsIndex() {
+  const { products, flash = {} } = usePage().props as unknown as PageProps;
+
   const handleAddToCart = (productId: number) => {
     router.post('/cart', { product_id: productId }, {
       preserveScroll: true,
@@ -20,6 +29,8 @@ export default function ProductsIndex({ products }: Props) {
 
   return (
     <>
+      {flash.notice && <Alert key={Date.now()} message={flash.notice} type="notice" />}
+      {flash.alert && <Alert key={Date.now()} message={flash.alert} type="alert" />}
       <Head title="Products" />
 
       <div className="container mx-auto p-6">
