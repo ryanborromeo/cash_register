@@ -1,7 +1,7 @@
 class CartsController < ApplicationController
   def create
     product = Product.find(params[:product_id])
-    current_cart.add_product(product)
+    CartServices::AddProduct.call(current_cart, product)
     save_cart
 
     flash[:notice] = "#{product.name} added to cart."

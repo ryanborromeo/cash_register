@@ -26,18 +26,6 @@ class Cart
     eager_load_products
   end
 
-  def add_product(added_product)
-    item = @items.find { |i| i.product_id == added_product.id }
-
-    if item
-      item.quantity += 1
-    else
-      new_item = CartItem.new(added_product.id)
-      new_item.product = added_product
-      @items << new_item
-    end
-  end
-
   def clear
     @items = []
   end
