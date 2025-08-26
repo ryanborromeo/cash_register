@@ -9,7 +9,7 @@ class CartTest < ActiveSupport::TestCase
   test "can be initialized" do
     cart = Cart.new
     assert_empty cart.items
-    assert_equal 0, cart.total
+    assert_equal 0, cart.subtotal
   end
 
   test "adds a product" do
@@ -44,7 +44,7 @@ class CartTest < ActiveSupport::TestCase
     CartServices::AddProduct.call(cart, @product1)
     CartServices::AddProduct.call(cart, @product2)
 
-    expected_total = (@product1.price * 2) + @product2.price
-    assert_equal expected_total, cart.total
+    expected_subtotal = (@product1.price * 2) + @product2.price
+    assert_equal expected_subtotal, cart.subtotal
   end
 end

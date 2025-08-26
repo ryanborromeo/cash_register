@@ -1,37 +1,21 @@
 class Cart
-  class CartItem
-    attr_reader :product_id
-    attr_accessor :quantity, :product
-
-    def initialize(product_id, quantity = 1)
-      @product_id = product_id
-      @quantity = quantity
-    end
-
-    def price
-      raise 'Product not loaded' unless product
-
-      product.price * quantity
-    end
-
-    def to_h
-      { 'product_id' => product_id, 'quantity' => quantity }
-    end
-  end
-
   attr_reader :items
 
   def initialize(items_data = [])
     @items = items_data.map { |item_data| CartItem.new(item_data['product_id'], item_data['quantity']) }
-    eager_load_products
+    CartServices::EagerLoadProducts.call(self)
   end
 
   def clear
     @items = []
   end
 
-  def total
+  def subtotal
     @items.sum(&:price)
+  end
+
+  def detailed_summary
+    PricingCalculator.calculate(self)
   end
 
   def to_session
@@ -50,16 +34,4 @@ class Cart
     new(session_data&.dig('items') || [])
   end
 
-  private
-
-  def eager_load_products
-    product_ids = @items.map(&:product_id)
-    return if product_ids.empty?
-
-    products = Product.where(id: product_ids).index_by(&:id)
-
-    @items.each do |item|
-      item.product = products[item.product_id]
-    end
-  end
 end

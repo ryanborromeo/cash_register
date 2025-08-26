@@ -1,19 +1,21 @@
 class CartsController < ApplicationController
   def create
-    product = Product.find(params[:product_id])
-    CartServices::AddProduct.call(current_cart, product)
-    save_cart
+    product = Product.find_by(id: params[:product_id])
 
-    flash[:notice] = "#{product.name} added to cart."
+    if product
+      CartServices::AddProduct.call(current_cart, product)
+      save_cart
+      flash[:notice] = "#{product.name} added to cart."
+    else
+      flash[:alert] = 'Product not found.'
+    end
+
     redirect_to root_path
   end
 
   def show
     render inertia: 'Cart/Show', props: {
-      cart: {
-        items: current_cart.enriched_items,
-        total: current_cart.total
-      }
+      cart: current_cart.detailed_summary
     }
   end
 
