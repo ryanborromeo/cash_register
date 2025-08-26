@@ -1,24 +1,36 @@
-# README
+# Tech Stacks Used
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* **Backend**: Ruby on Rails 8, SQLite
+* **Frontend**: React, TypeScript, Inertia.js, Vite, Tailwind CSS
+* **Testing**: Minitest, Capybara
+* **Deployment**: Kamal, Docker
 
-Things you may want to cover:
+# How to run
 
-* Ruby version
+### Prerequisites
 
-* System dependencies
+- Ruby 3.3.0+
+- Node.js 20.0.0+
+- Yarn or npm
 
-* Configuration
+### Setup
 
-* Database creation
+1. **Install dependencies:**
+   ```bash
+   bundle install
+   npm install
+   ```
 
-* Database initialization
+2. **Set up the database:**
+   ```bash
+   rails db:create
+   rails db:migrate
+   rails db:seed
+   ```
 
-* How to run the test suite
+3. **Start the server:**
+   ```bash
+   bin/dev
+   ```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The application will be available at `http://localhost:3000`.
