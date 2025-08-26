@@ -4,7 +4,7 @@ class PricingRules::PercentageDiscountRule < PricingRule
   DISCOUNT_FACTOR = 1.0 / 3.0
 
   def self.apply!(breakdown)
-    item_breakdown = breakdown.find { |b| b[:item].product.code == PRODUCT_CODE }
+    item_breakdown = breakdown.find { |b| b[:item].product && b[:item].product.code == PRODUCT_CODE }
 
     return unless item_breakdown && item_breakdown[:item].quantity >= MIN_QUANTITY
 

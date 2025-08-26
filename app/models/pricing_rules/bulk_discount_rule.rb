@@ -4,7 +4,7 @@ class PricingRules::BulkDiscountRule < PricingRule
   NEW_PRICE = 4.50
 
   def self.apply!(breakdown)
-    item_breakdown = breakdown.find { |b| b[:item].product.code == PRODUCT_CODE }
+    item_breakdown = breakdown.find { |b| b[:item].product && b[:item].product.code == PRODUCT_CODE }
 
     return unless item_breakdown && item_breakdown[:item].quantity >= MIN_QUANTITY
 
