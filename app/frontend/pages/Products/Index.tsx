@@ -1,5 +1,4 @@
 import { Head, Link, router, usePage } from '@inertiajs/react'
-import { useState, useEffect } from 'react'
 
 import Alert from '../../components/Alert'
 
@@ -10,8 +9,14 @@ interface Product {
   price: number
 }
 
+interface User {
+  role: string;
+  display_name: string;
+}
+
 interface PageProps {
   products: Product[];
+  current_user: User | null;
   flash: {
     notice?: string;
     alert?: string;
@@ -19,13 +24,30 @@ interface PageProps {
 }
 
 export default function ProductsIndex() {
-  const { products, flash = {} } = usePage().props as unknown as PageProps;
+  const { products, current_user, flash = {} } = usePage().props as unknown as PageProps;
 
   const handleAddToCart = (productId: number) => {
     router.post('/cart', { product_id: productId }, {
       preserveScroll: true,
     })
   }
+
+  const handleLogout = () => {
+    router.delete('/logout')
+  }
+
+  const getRoleDescription = (role: string) => {
+    switch (role) {
+      case 'ceo':
+        return 'Buy-one-get-one-free on Green Tea (GR1)';
+      case 'coo':
+        return 'Bulk discount on Strawberries (SR1) - €4.50 each when buying 3+';
+      case 'vp_engineering':
+        return 'Coffee discount (CF1) - 2/3 price when buying 3+';
+      default:
+        return '';
+    }
+  };
 
   return (
     <>
@@ -35,12 +57,32 @@ export default function ProductsIndex() {
 
       <div className="container mx-auto p-6">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Cash Register - Products
-          </h1>
-          <Link href="/cart" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-            View Cart
-          </Link>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Cash Register - Products
+            </h1>
+            {current_user && (
+              <div className="mt-2">
+                <p className="text-sm text-gray-600">
+                  Logged in as <span className="font-medium">{current_user.display_name}</span>
+                </p>
+                <p className="text-xs text-blue-600">{getRoleDescription(current_user.role)}</p>
+              </div>
+            )}
+          </div>
+          <div className="flex space-x-3">
+            <Link href="/cart" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+              View Cart
+            </Link>
+            {current_user && (
+              <button
+                onClick={handleLogout}
+                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Logout
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

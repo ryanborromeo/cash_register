@@ -8,7 +8,7 @@ class CartsControllerTest < ActionDispatch::IntegrationTest
   test "should add product to cart" do
     post cart_path, params: { product_id: @product.id }
 
-    assert_redirected_to root_path
+    assert_redirected_to products_path
     assert_equal "#{@product.name} added to cart.", flash[:notice]
 
     # Verify session data
@@ -21,7 +21,7 @@ class CartsControllerTest < ActionDispatch::IntegrationTest
   test "should handle non-existent product" do
     post cart_path, params: { product_id: 'invalid-id' }
 
-    assert_redirected_to root_path
+    assert_redirected_to products_path
     assert_equal 'Product not found.', flash[:alert]
   end
 end

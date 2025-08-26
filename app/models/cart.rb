@@ -14,8 +14,8 @@ class Cart
     @items.sum(&:price)
   end
 
-  def detailed_summary
-    PricingCalculator.calculate(self)
+  def detailed_summary(user_role = nil)
+    PricingCalculator.calculate(self, user_role)
   end
 
   def to_session

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  get "inertia-example", to: "inertia_example#index"
+  resources :sessions, only: [:create, :destroy]
+  get "login/:role", to: "sessions#create", as: :login
+  delete "logout", to: "sessions#destroy", as: :logout
+  
   resources :products, only: [:index]
   resource :cart, only: [:create, :show, :destroy]
 
@@ -14,5 +17,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "products#index"
+  root "home#index"
 end

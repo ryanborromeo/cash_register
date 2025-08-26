@@ -10,12 +10,17 @@ class CartsController < ApplicationController
       flash[:alert] = 'Product not found.'
     end
 
-    redirect_to root_path
+    redirect_to products_path
   end
 
   def show
     render inertia: 'Cart/Show', props: {
-      cart: current_cart.detailed_summary
+      cart: current_cart.detailed_summary,
+      cart_with_pricing: PricingCalculator.calculate(current_cart, current_user_role),
+      current_user: current_user ? {
+        role: current_user.role,
+        display_name: current_user.display_name
+      } : nil
     }
   end
 

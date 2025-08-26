@@ -1,16 +1,11 @@
 class PricingCalculator
-  RULES = [
-    PricingRules::BuyOneGetOneFreeRule,
-    PricingRules::BulkDiscountRule,
-    PricingRules::PercentageDiscountRule
-  ].freeze
-
-  def self.calculate(cart)
-    new(cart).calculate
+  def self.calculate(cart, user_role = nil)
+    new(cart, user_role).calculate
   end
 
-  def initialize(cart)
+  def initialize(cart, user_role = nil)
     @cart = cart
+    @user_role = user_role
     @items_breakdown = @cart.items.map do |item|
       {
         item: item,
@@ -33,7 +28,10 @@ class PricingCalculator
   private
 
   def apply_discounts
-    RULES.each do |rule|
+    return unless @user_role
+
+    user = User.new(@user_role)
+    user.pricing_rules.each do |rule|
       rule.apply!(@items_breakdown)
     end
   end

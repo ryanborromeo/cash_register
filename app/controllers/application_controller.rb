@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   }
 
   protect_from_forgery with: :exception
-  helper_method :current_cart
+  helper_method :current_cart, :current_user_role, :current_user
 
   private
 
@@ -18,6 +18,21 @@ class ApplicationController < ActionController::Base
   def save_cart
     session[:cart] = current_cart.to_session
   end
+
+  protected
+
+  def current_user_role
+    session[:user_role]
+  end
+
+  def current_user
+    User.new(current_user_role) if current_user_role
+  end
+
+  def require_user_role
+    redirect_to root_path unless current_user_role
+  end
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
