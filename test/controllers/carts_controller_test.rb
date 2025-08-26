@@ -17,4 +17,11 @@ class CartsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, cart_data["items"].size
     assert_equal @product.id, cart_data["items"].first["product_id"]
   end
+
+  test "should handle non-existent product" do
+    post cart_path, params: { product_id: 'invalid-id' }
+
+    assert_redirected_to root_path
+    assert_equal 'Product not found.', flash[:alert]
+  end
 end

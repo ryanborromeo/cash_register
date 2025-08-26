@@ -27,7 +27,12 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :invalid_authenticity_token
 
   def record_not_found
-    render_error(404, 'The page you are looking for could not be found.')
+    if inertia_request?
+      render_error(404, 'The page you are looking for could not be found.')
+    else
+      flash[:alert] = 'Record not found.'
+      redirect_to root_path
+    end
   end
 
   def database_unavailable
